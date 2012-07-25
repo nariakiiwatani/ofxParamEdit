@@ -2,36 +2,38 @@ ofxParamEdit
 ============
 by nariakiiwatani
 
-Abstract:------------
+Abstract------------
 ofxParamEdit provides the SIMPLEST interface to edit values with GUI.
 You don't have to keep ofxBaseGui instances in your code.
 Only you have to do is passing normal variables (like int, float,,,) to ofxParamEdit (and keeping them alive).
 
-Depend to...:
+Depend to...
 ------------
 ofxGui
 
-Usage:
+Usage
 ------------
 see example/src/testApp.cpp
 
-For ofxGui users:
+For ofxGui users
 ------------
 convert your code like below...
-<<<<<<< .from
-ofxFloatSlider f;
-f.setup("float value", 0, -1, 1);
-f.draw();
-=======
-float f = 0;
-ofxParamEdit edit;
-edit.addFloat("float value", f, -1, 1);
-edit.draw();
->>>>>>> .to
+
+from:
+	ofxFloatSlider f;
+	f.setup("float value", 0, -1, 1);
+	f.draw();
+
+to:
+	float f = 0;
+	ofxParamEdit edit;
+	edit.addFloat("float value", f, -1, 1);
+	edit.draw();
+
 even after the change, doSomething(f) will remain the same. :)
 
 
-Tips:
+Tips
 ------------
 How to show two or more panels at the same time:
 -Create two or more ofxParamEdit instances.
