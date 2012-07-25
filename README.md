@@ -20,11 +20,13 @@ For ofxGui users
 convert your code like below...
 
 from:
+
 	ofxFloatSlider f;
 	f.setup("float value", 0, -1, 1);
 	f.draw();
 
 to:
+
 	float f = 0;
 	ofxParamEdit edit;
 	edit.addFloat("float value", f, -1, 1);
@@ -36,11 +38,13 @@ even after the change, doSomething(f) will remain the same. :)
 Tips
 ------------
 How to show two or more panels at the same time:
--Create two or more ofxParamEdit instances.
+
+Create two or more ofxParamEdit instances.
 
 How to edit a variable with multiple panel:
--Add the variable twice simply.
--(Because of ofxGui's spec, opposite view will not be updated.)
+
+Add the variable twice simply.
+(Because of ofxGui's spec, opposite view will not be updated.)
 
 
 License
