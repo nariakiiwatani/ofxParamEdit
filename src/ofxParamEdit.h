@@ -20,6 +20,7 @@
 class ofxParamEdit
 {
 public:
+	ofxParamEdit();
 	ofxParamEdit(string name);
 	~ofxParamEdit();
 

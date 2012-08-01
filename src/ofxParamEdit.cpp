@@ -16,6 +16,13 @@
 #include "ofxGuiString.h"
 #include <algorithm>
 
+ofxParamEdit::ofxParamEdit()
+:root_("root", NULL, this)
+,current_(&root_)
+,active_(&root_)
+,enable_(true)
+{
+}
 ofxParamEdit::ofxParamEdit(string name)
 :root_(name, NULL, this)
 ,current_(&root_)
