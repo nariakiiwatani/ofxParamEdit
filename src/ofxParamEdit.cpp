@@ -17,7 +17,7 @@
 #include <algorithm>
 
 ofxParamEdit::ofxParamEdit()
-:root_("root", NULL, this)
+:root_("param", NULL, this)
 ,current_(&root_)
 ,active_(&root_)
 ,enable_(true)
@@ -55,6 +55,7 @@ void ofxParamEdit::beginGroup(string name)
 
 void ofxParamEdit::endGroup()
 {
+	current_->load();
 	current_ = current_->parent_;
 }
 
@@ -115,6 +116,8 @@ IMPL_ADD_TOGGLE_FUNC1(Button)
 IMPL_ADD_TOGGLE_FUNC2(Button, bool)
 
 #undef IMPL_ADD_SLIDER_FUNC
+#undef IMPL_ADD_TOGGLE_FUNC1
+#undef IMPL_ADD_TOGGLE_FUNC2
 
 
 void ofxParamEdit::addString(string name) {
