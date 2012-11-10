@@ -24,6 +24,8 @@ public:
 	ofxParamEdit(string name);
 	~ofxParamEdit();
 
+	void clear();
+
 	// between beginGroup and endGroup, controlls are added into the group
 	void beginGroup(string name);
 	void endGroup();
@@ -37,6 +39,7 @@ public:
 	void addFloat(string name, float &value, float min, float max);
 	void addDouble(string name, double &value, double min, double max);
 	void addToggle(string name, bool &value) { addBool(name, value); }
+	void addBool(string name);
 	void addBool(string name, bool &value);
 	void addButton(string name);
 	void addButton(string name, bool &value);
@@ -61,7 +64,11 @@ public:
 	template<class ListenerClass>
 	void addBool(string name, bool &value, ListenerClass * listener, void ( ListenerClass::*method )(bool&));
 	template<class ListenerClass>
+	void addBool(string name, ListenerClass * listener, void ( ListenerClass::*method )(bool&));
+	template<class ListenerClass>
 	void addToggle(string name, bool &value, ListenerClass * listener, void ( ListenerClass::*method )(bool&));
+	template<class ListenerClass>
+	void addToggle(string name, ListenerClass * listener, void ( ListenerClass::*method )(bool&));
 	template<class ListenerClass>
 	void addButton(string name, bool &value, ListenerClass * listener, void ( ListenerClass::*method )(bool&));
 	template<class ListenerClass>
@@ -110,6 +117,11 @@ private:
 
 	class ofxParamEditToggle {
 	public:
+		ofxParamEditToggle(string name)
+		:dummy_(false),value_(dummy_) {
+			gui_.setup(name, dummy_);
+			gui_.addListener(this, &ofxParamEditToggle::valueChanged);
+		}
 		ofxParamEditToggle(string name, bool& param)
 		:value_(param) {
 			gui_.setup(name, param);
@@ -127,6 +139,7 @@ private:
 		}
 	private:
 		bool& value_;
+		bool dummy_;
 		ofEvent<bool> changedE_;
 		ofxToggle gui_;
 	};
@@ -135,7 +148,7 @@ private:
 	class ofxParamEditButton {
 	public:
 		ofxParamEditButton(string name)
-		:value_(dummy_) {
+		:dummy_(false),value_(dummy_) {
 			gui_.setup(name);
 			gui_.addListener(this, &ofxParamEditButton::valueChanged);
 		}
@@ -170,6 +183,7 @@ private:
 	ofxParamEditUInt* _addUInt(string name, unsigned int &value, unsigned int min, unsigned int max);
 	ofxParamEditFloat* _addFloat(string name, float &value, float min, float max);
 	ofxParamEditDouble* _addDouble(string name, double &value, double min, double max);
+	ofxParamEditBool* _addBool(string name);
 	ofxParamEditBool* _addBool(string name, bool& value);
 	ofxParamEditButton* _addButton(string name);
 	ofxParamEditButton* _addButton(string name, bool &value);
@@ -248,8 +262,19 @@ void ofxParamEdit::addBool(string name, bool &value, ListenerClass * listener, v
 	}
 }
 template<class ListenerClass>
+void ofxParamEdit::addBool(string name, ListenerClass * listener, void ( ListenerClass::*method )(bool&)) {
+	ofxParamEditBool* edit = _addBool(name);
+	if(listener && method) {
+		edit->addListener(listener, method);
+	}
+}
+template<class ListenerClass>
 void ofxParamEdit::addToggle(string name, bool &value, ListenerClass * listener, void ( ListenerClass::*method )(bool&)) {
 	addBool(name, value, listener, method);
+}
+template<class ListenerClass>
+void ofxParamEdit::addToggle(string name, ListenerClass * listener, void ( ListenerClass::*method )(bool&)) {
+	addBool(name, listener, method);
 }
 template<class ListenerClass>
 void ofxParamEdit::addButton(string name, ListenerClass * listener, void ( ListenerClass::*method )(bool&)) {

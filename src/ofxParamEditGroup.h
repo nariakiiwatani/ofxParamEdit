@@ -17,6 +17,7 @@ public:
 	void add(ofxBaseGui* element);
 	void open();
 	void load();
+	void clear();
 	string getName(bool check_parent=false, string separator="/");
 private:
 	void openButtonPress(bool&);

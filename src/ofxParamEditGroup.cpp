@@ -13,6 +13,12 @@ ofxParamEditGroup::ofxParamEditGroup(string name, ofxParamEditGroup* parent, ofx
 	panel_.setup(getName(true), getName(true)+".xml");
 }
 
+void ofxParamEditGroup::clear()
+{
+	panel_.clear();
+	panel_.setup(getName(true), getName(true)+".xml");
+}
+
 void ofxParamEditGroup::open()
 {
 	controller_->openGroup(this);

@@ -29,15 +29,22 @@ ofxParamEdit::ofxParamEdit(string name)
 ,active_(&root_)
 ,enable_(true)
 {
-	allocated_list_.clear();
 }
 
 ofxParamEdit::~ofxParamEdit()
 {
-	for(vector<void*>::iterator it = allocated_list_.begin(); it != allocated_list_.end(); ++it) {
-		delete *it;
+	clear();
+}
+
+void ofxParamEdit::clear()
+{
+	while(!allocated_list_.empty()) {
+		delete allocated_list_.at(0);
+		allocated_list_.erase(allocated_list_.begin());
 	}
-	allocated_list_.clear();
+	root_.clear();
+	current_ = &root_;
+	active_ = &root_;
 }
 
 void ofxParamEdit::draw()
@@ -111,6 +118,7 @@ IMPL_ADD_SLIDER_FUNC(Int, int)
 IMPL_ADD_SLIDER_FUNC(UInt, unsigned int)
 IMPL_ADD_SLIDER_FUNC(Float, float)
 IMPL_ADD_SLIDER_FUNC(Double, double)
+IMPL_ADD_TOGGLE_FUNC1(Bool)
 IMPL_ADD_TOGGLE_FUNC2(Bool, bool)
 IMPL_ADD_TOGGLE_FUNC1(Button)
 IMPL_ADD_TOGGLE_FUNC2(Button, bool)
