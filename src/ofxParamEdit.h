@@ -82,6 +82,13 @@ public:
 	void openGroup(ofxParamEditGroup* group);
 	void draw();
 
+	void setPosition(ofPoint p);
+	void setPosition(float x, float y);
+	ofPoint getPosition();
+
+	void load();
+	void save();
+
 private:
 	template<typename ParameterType, typename InnerType>
 	class ofxParamEditSlider {

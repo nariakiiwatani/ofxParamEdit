@@ -44,6 +44,10 @@ void ofxParamEditGroup::load()
 {
 	panel_.loadFromFile(getName(true)+".xml");
 }
+void ofxParamEditGroup::save()
+{
+	panel_.saveToFile(getName(true)+".xml");
+}
 
 string ofxParamEditGroup::getName(bool check_parent, string separator)
 {
@@ -54,3 +58,21 @@ string ofxParamEditGroup::getName(bool check_parent, string separator)
 		return name_;
 	}
 }
+
+
+void ofxParamEditGroup::setPosition(ofPoint p)
+{
+	panel_.setPosition(p);
+}
+
+void ofxParamEditGroup::setPosition(float x, float y)
+{
+	panel_.setPosition(x,y);
+}
+
+ofPoint ofxParamEditGroup::getPosition()
+{
+	return panel_.getPosition();
+}
+
+/* EOF */

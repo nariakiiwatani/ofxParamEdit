@@ -66,12 +66,38 @@ void ofxParamEdit::endGroup()
 	current_ = current_->parent_;
 }
 
+void ofxParamEdit::load()
+{
+	current_->load();
+}
+
+void ofxParamEdit::save()
+{
+	current_->save();
+}
+
 void ofxParamEdit::openGroup(ofxParamEditGroup* group)
 {
 	group->panel_.setPosition(active_->panel_.getPosition());
 	active_ = group;
 	enable_ = true;
 }
+
+void ofxParamEdit::setPosition(ofPoint p)
+{
+	active_->setPosition(p);
+}
+
+void ofxParamEdit::setPosition(float x, float y)
+{
+	active_->setPosition(x,y);
+}
+
+ofPoint ofxParamEdit::getPosition()
+{
+	return active_->getPosition();
+}
+
 
 /* ======================================
 		add functions' implementation

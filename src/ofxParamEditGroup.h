@@ -17,8 +17,14 @@ public:
 	void add(ofxBaseGui* element);
 	void open();
 	void load();
+	void save();
 	void clear();
 	string getName(bool check_parent=false, string separator="/");
+
+	void setPosition(ofPoint p);
+	void setPosition(float x, float y);
+	ofPoint getPosition();
+
 private:
 	void openButtonPress(bool&);
 	void backButtonPress(bool&);
