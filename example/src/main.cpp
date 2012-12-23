@@ -1,17 +1,5 @@
-/******************************************************************/
-/**
- * @file	main.cpp
- * @brief	Example for ofxGuiMenu addon
- * @note
- * @todo
- * @bug	
- *
- * @author	nariakiiwatani
- * @date	Jul. 24, 2012
- */
-/******************************************************************/
-#include "testApp.h" // Needs to be in front of ofMain.h
 #include "ofMain.h"
+#include "testApp.h"
 #include "ofAppGlutWindow.h"
 
 //========================================================================
