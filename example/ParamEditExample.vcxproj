@@ -223,6 +223,8 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
   <ItemGroup>
     <ClCompile Include="..\..\ofxGui\src\ofxBaseGui.cpp" />
     <ClCompile Include="..\..\ofxGui\src\ofxButton.cpp" />
+    <ClCompile Include="..\..\ofxGui\src\ofxCustomSlider.cpp" />
+    <ClCompile Include="..\..\ofxGui\src\ofxLabel.cpp" />
     <ClCompile Include="..\..\ofxGui\src\ofxPanel.cpp" />
     <ClCompile Include="..\..\ofxGui\src\ofxSlider.cpp" />
     <ClCompile Include="..\..\ofxGui\src\ofxToggle.cpp" />
@@ -230,9 +232,9 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
     <ClCompile Include="..\..\ofxXmlSettings\libs\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\ofxXmlSettings\libs\tinyxmlparser.cpp" />
     <ClCompile Include="..\..\ofxXmlSettings\src\ofxXmlSettings.cpp" />
-    <ClCompile Include="..\src\ofxParamEdit.cpp" />
-    <ClCompile Include="..\src\ofxParamEditGroup.cpp" />
-    <ClCompile Include="..\src\ofxGuiString.cpp" />
+    <ClCompile Include="..\src\ofxParamPanel.cpp" />
+    <ClCompile Include="..\src\ofxParamSlider.cpp" />
+    <ClCompile Include="..\src\ofxParamToggle.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\testApp.cpp" />
   </ItemGroup>
@@ -241,15 +243,17 @@ if not exist "$(ProjectDir)\bin\data" mkdir  "$(ProjectDir)\bin\data"
     <ClInclude Include="..\..\ofxGui\src\ofParameter.h" />
     <ClInclude Include="..\..\ofxGui\src\ofxBaseGui.h" />
     <ClInclude Include="..\..\ofxGui\src\ofxButton.h" />
+    <ClInclude Include="..\..\ofxGui\src\ofxCustomSlider.h" />
     <ClInclude Include="..\..\ofxGui\src\ofxGui.h" />
+    <ClInclude Include="..\..\ofxGui\src\ofxLabel.h" />
     <ClInclude Include="..\..\ofxGui\src\ofxPanel.h" />
     <ClInclude Include="..\..\ofxGui\src\ofxSlider.h" />
     <ClInclude Include="..\..\ofxGui\src\ofxToggle.h" />
     <ClInclude Include="..\..\ofxXmlSettings\libs\tinyxml.h" />
     <ClInclude Include="..\..\ofxXmlSettings\src\ofxXmlSettings.h" />
-    <ClInclude Include="..\src\ofxParamEdit.h" />
-    <ClInclude Include="..\src\ofxParamEditGroup.h" />
-    <ClInclude Include="..\src\ofxGuiString.h" />
+    <ClInclude Include="..\src\ofxParamPanel.h" />
+    <ClInclude Include="..\src\ofxParamSlider.h" />
+    <ClInclude Include="..\src\ofxParamToggle.h" />
     <ClInclude Include="src\testApp.h" />
   </ItemGroup>
   <ItemGroup>
