@@ -1,6 +1,5 @@
 
 #include "ofxParamPanel.h"
-#include "ofxParamToggle.h"
 
 ofxParamPanel::ofxParamPanel()
 :ofxPanel()
@@ -10,14 +9,33 @@ ofxParamPanel::ofxParamPanel()
 {
 }
 
+ofxParamPanel::~ofxParamPanel()
+{
+	while(!allocated_.empty()) {
+		delete allocated_.at(0);
+		allocated_.erase(allocated_.begin());
+	}
+}
+
 void ofxParamPanel::add(ofxBaseGui * element)
 {
 	current_->ofxPanel::add(element);
 }
 
-void ofxParamPanel::add(string name, bool& val)
+ofxButton* ofxParamPanel::addButton(string name)
 {
-	current_->ofxPanel::add(new ofxParamToggle(name, val));
+	ofxButton* button = new ofxButton();
+	current_->ofxPanel::add(button->setup(name));
+	allocated_.push_back(button);
+	return button;
+}
+
+ofxParamToggle* ofxParamPanel::addToggle(string name, bool& val)
+{
+	ofxParamToggle* toggle = new ofxParamToggle(name, val);
+	current_->ofxPanel::add(toggle);
+	allocated_.push_back(toggle);
+	return toggle;
 }
 
 void ofxParamPanel::load()
@@ -43,7 +61,7 @@ void ofxParamPanel::beginGroup(string name)
 	next->setup(current_->name+"/"+name, current_->name+"/"+name+".xml", current_->b.x+current_->b.width, current_->b.y+current_->b.height);
 	next->parent_ = current_;
 	current_->children_.push_back(next);
-	current_->add(">"+name, next->is_open_);
+	current_->addToggle(">"+name, next->is_open_);
 	current_ = next;
 }
 
