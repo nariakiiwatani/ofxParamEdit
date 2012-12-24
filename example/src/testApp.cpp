@@ -14,11 +14,11 @@ namespace {
 //--------------------------------------------------------------
 void testApp::setup(){
 	panel_.setup("settings");
-	panel_.add("toggle", toggle_value_);
+	panel_.addToggle("toggle", toggle_value_);
 	panel_.beginGroup("hoge");
-	panel_.add("int", int_value_, 0, 255);
+	panel_.addSlider("int", int_value_, 0, 255);
 	panel_.beginGroup("fuga");
-	panel_.add("float", float_value_, -1.f, 1.f);
+	panel_.addSlider("float", float_value_, -1.f, 1.f);
 	panel_.endGroup();
 	panel_.endGroup();
 	panel_.load();
