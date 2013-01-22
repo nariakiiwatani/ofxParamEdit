@@ -1,5 +1,6 @@
 
 #include "ofxParamPanel.h"
+#include "ofxLabel.h"
 
 ofxParamPanel::ofxParamPanel()
 :ofxPanel()
@@ -38,6 +39,20 @@ ofxParamToggle* ofxParamPanel::addToggle(string name, bool& val)
 	return toggle;
 }
 
+ofxLabel* ofxParamPanel::addString(string name)
+{
+	ofxLabel* label = new ofxLabel();
+	current_->ofxPanel::add(label->setup(name, name));
+	allocated_.push_back(label);
+	return label;
+}
+
+void ofxParamPanel::addPanel(string name, ofxParamPanel* panel)
+{
+	current_->children_.push_back(panel);
+	current_->addToggle(name, panel->is_open_);
+}
+
 void ofxParamPanel::load()
 {
 	ofxPanel::load();
@@ -61,7 +76,7 @@ void ofxParamPanel::beginGroup(string name)
 	next->setup(current_->name+"/"+name, current_->name+"/"+name+".xml", current_->b.x+current_->b.width, current_->b.y+current_->b.height);
 	next->parent_ = current_;
 	current_->children_.push_back(next);
-	current_->addToggle(">"+name, next->is_open_);
+	current_->addToggle(name, next->is_open_);
 	current_ = next;
 }
 

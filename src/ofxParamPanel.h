@@ -4,7 +4,9 @@
 #include "ofxParamSlider.h"
 #include "ofxParamtoggle.h"
 
-class ofxParamPanel : public ofxPanel{
+class ofxLabel;
+class ofxParamPanel : public ofxPanel
+{
 public:
 	ofxParamPanel();
 	~ofxParamPanel();
@@ -23,6 +25,10 @@ public:
 	ofxParamSlider<Type>* addSlider(string name, Type& val, Type min, Type max);
 	template<typename Type, typename ListenerClass>
 	ofxParamSlider<Type>* addSlider(string name, Type& val, Type min, Type max, ListenerClass * listener, void ( ListenerClass::*method )(Type&));
+
+	ofxLabel* addString(string name);
+
+	void addPanel(string name, ofxParamPanel* panel);
 
 	void load();
 	void save();
