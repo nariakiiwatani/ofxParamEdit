@@ -18,7 +18,7 @@ public:
 	virtual void saveToXml(ofxXmlSettings& xml) ;
 	virtual void loadFromXml(ofxXmlSettings& xml);
 	
-	void draw();
+	virtual void draw();
 
 	template<class ListenerClass>
 	void addListener(ListenerClass * listener, void ( ListenerClass::*method )(bool&)){

@@ -9,7 +9,6 @@ ofxParamToggle::ofxParamToggle()
 
 ofxParamToggle::~ofxParamToggle()
 {
-	// ÇøÇ·ÇÒÇ∆ÇµÇΩèåèÇ™ïKóv
 	if(ref_) {
 		ofxToggle::removeListener(this, &ofxParamToggle::onChange);
 	}
@@ -33,4 +32,12 @@ void ofxParamToggle::onChange(bool& val)
 		*ref_ = val;
 	}
 	changed_.notify(this, val);
+}
+
+void ofxParamToggle::draw()
+{
+	if(ref_ && value != *ref_) {
+		value = *ref_;
+	}
+	ofxToggle::draw();
 }

@@ -34,7 +34,7 @@ public:
 	double operator=(Type v);
 	operator Type & ();
 
-	void draw();
+	virtual void draw();
 	
 	ofxParameter<Type> value;
 

@@ -20,6 +20,8 @@ public:
 		changed_ -= Poco::delegate(listener, method);
 	}
 
+	void draw();
+
 private:
 	void onChange(Type& val);
 	Type* ref_;
@@ -63,4 +65,13 @@ void ofxParamSlider<Type>::onChange(Type& val)
 		*ref_ = val;
 	}
 	changed_.notify(this, val);
+}
+
+template<typename Type>
+void ofxParamSlider<Type>::draw()
+{
+	if(ref_ && value != *ref_) {
+		value = *ref_;
+	}
+	ofxSlider<Type>::draw();
 }

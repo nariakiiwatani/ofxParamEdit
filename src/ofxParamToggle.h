@@ -19,6 +19,8 @@ public:
 		changed_ -= Poco::delegate(listener, method);
 	}
 
+	void draw();
+
 private:
 	void onChange(bool& val);
 	bool * ref_;
