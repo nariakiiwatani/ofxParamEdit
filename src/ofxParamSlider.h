@@ -7,8 +7,8 @@ class ofxParamSlider : public ofxSlider<Type>{
 public:
 	ofxParamSlider();
 	~ofxParamSlider();
-	ofxParamSlider(string _name, Type & val, Type min, Type max, float width = defaultWidth, float height = defaultHeight);
-	ofxParamSlider* setup(string _name, Type & val, Type min, Type max, float width = defaultWidth, float height = defaultHeight);
+	ofxParamSlider(string _name, Type & val, Type min, Type max, float width = ofxSlider<Type>::defaultWidth, float height = ofxSlider<Type>::defaultHeight);
+	ofxParamSlider* setup(string _name, Type & val, Type min, Type max, float width = ofxSlider<Type>::defaultWidth, float height = ofxSlider<Type>::defaultHeight);
 
 	template<class ListenerClass>
 	void addListener(ListenerClass * listener, void ( ListenerClass::*method )(Type&)){

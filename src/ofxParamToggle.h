@@ -6,8 +6,8 @@ class ofxParamToggle : public ofxToggle{
 public:
 	ofxParamToggle();
 	~ofxParamToggle();
-	ofxParamToggle(string _name, bool& val, float width = defaultWidth, float height = defaultHeight);
-	ofxParamToggle * setup(string _name, bool& val, float width = defaultWidth, float height = defaultHeight);
+	ofxParamToggle(string _name, bool& val, float width = ofxToggle::defaultWidth, float height = ofxToggle::defaultHeight);
+	ofxParamToggle * setup(string _name, bool& val, float width = ofxToggle::defaultWidth, float height = ofxToggle::defaultHeight);
 
 	template<class ListenerClass>
 	void addListener(ListenerClass * listener, void ( ListenerClass::*method )(bool&)){
