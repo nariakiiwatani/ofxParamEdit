@@ -30,7 +30,7 @@ private:
 
 template<typename Type>
 ofxParamSlider<Type>::ofxParamSlider()
-:ofxSlider()
+:ofxSlider<Type>()
 ,ref_(NULL)
 {
 }
@@ -39,7 +39,7 @@ template<typename Type>
 ofxParamSlider<Type>::~ofxParamSlider()
 {
 	if(ref_) {
-		ofxParamSlider::removeListener(this, &ofxParamSlider::onChange);
+		ofxParamSlider<Type>::removeListener(this, &ofxParamSlider::onChange);
 	}
 }
 
@@ -52,8 +52,8 @@ ofxParamSlider<Type>::ofxParamSlider(string _name, Type& val, Type min, Type max
 template<typename Type>
 ofxParamSlider<Type>* ofxParamSlider<Type>::setup(string _name, Type& val, Type min, Type max, float width, float height)
 {
-	ofxSlider::setup(_name, val, min, max, width, height);
-	ofxSlider::addListener(this, &ofxParamSlider::onChange);
+	ofxSlider<Type>::setup(_name, val, min, max, width, height);
+	ofxSlider<Type>::addListener(this, &ofxParamSlider::onChange);
 	ref_ = &val;
 	return this;
 }
