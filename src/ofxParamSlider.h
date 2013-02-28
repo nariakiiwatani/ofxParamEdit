@@ -70,8 +70,8 @@ void ofxParamSlider<Type>::onChange(Type& val)
 template<typename Type>
 void ofxParamSlider<Type>::draw()
 {
-	if(ref_ && value != *ref_) {
-		value = *ref_;
+	if(ref_ && ofxSlider<Type>::value != *ref_) {
+		ofxSlider<Type>::value = *ref_;
 	}
 	ofxSlider<Type>::draw();
 }
