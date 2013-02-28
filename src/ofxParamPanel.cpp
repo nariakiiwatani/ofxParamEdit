@@ -6,7 +6,7 @@ ofxParamPanel::ofxParamPanel()
 :ofxPanel()
 ,parent_(NULL)
 ,current_(this)
-,is_open_(true)
+,is_open_(false)
 {
 }
 
@@ -87,9 +87,9 @@ void ofxParamPanel::endGroup()
 
 void ofxParamPanel::draw()
 {
-	if(is_open_) {
-		ofxPanel::draw();
-		for(vector<ofxParamPanel*>::iterator it = children_.begin(); it != children_.end(); ++it) {
+	ofxPanel::draw();
+	for(vector<ofxParamPanel*>::iterator it = children_.begin(); it != children_.end(); ++it) {
+		if((*it)->isOpen()) {
 			(*it)->draw();
 		}
 	}

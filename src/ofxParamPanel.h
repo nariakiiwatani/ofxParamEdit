@@ -33,6 +33,8 @@ public:
 	void load();
 	void save();
 
+	bool isOpen() { return is_open_; }
+
 	void beginGroup(string name);
 	void endGroup();
 	void draw();
