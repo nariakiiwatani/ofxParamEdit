@@ -16,7 +16,7 @@ public:
 
 	virtual ~ofxPanel();
 	
-	ofxPanel * setup(string collectionName="", string _filename="settings.xml", float x = 10, float y = 10);
+	ofxPanel * setup(string collectionName="", string _filename="", float x = 10, float y = 10);
 	
 	virtual void load();
 	virtual void save();
@@ -55,16 +55,19 @@ protected:
 	template<class ControlType>
 	ControlType getControlType(string name);
 
+	void fold() { bCollectionVisible = !bCollectionVisible; }
+
 protected:
 	ofPoint grabPt;
 	bool bGrabbed;
+	bool bCollectionVisible;
 	float spacing;
 	float header;
 	vector <ofxBaseGui *> collection;
 	
 	string filename;
-	ofRectangle loadBox, saveBox;
-	static ofImage loadIcon, saveIcon;
+	ofRectangle foldBox, loadBox, saveBox;
+	static ofImage foldIcon, loadIcon, saveIcon;
 };
 
 template<class ControlType>

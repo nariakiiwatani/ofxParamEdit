@@ -8,18 +8,23 @@
 #include "ofxPanel.h"
 #include "ofGraphics.h"
 
+ofImage ofxPanel::foldIcon;
 ofImage ofxPanel::loadIcon;
 ofImage ofxPanel::saveIcon;
 
 ofxPanel::ofxPanel(){
 	bGuiActive = false;
 	bGrabbed = false;
+	bCollectionVisible = true;
 }
 
 ofxPanel::~ofxPanel(){
 }
 
 ofxPanel * ofxPanel::setup(string collectionName, string _filename, float x, float y){
+	if(_filename=="") {
+		_filename = collectionName+".xml";
+	}
 	name = collectionName;
 	b.x = x;
 	b.y = y;
@@ -99,7 +104,7 @@ void ofxPanel::mouseMoved(ofMouseEventArgs & args){
 
 void ofxPanel::mousePressed(ofMouseEventArgs & args){
 	setValue(args.x, args.y, true);
-	if( bGuiActive ){
+	if( bGuiActive && bCollectionVisible ){
 		ofMouseEventArgs a = args;
 		a.x -= b.x;
 		a.y -= b.y;
@@ -111,7 +116,7 @@ void ofxPanel::mousePressed(ofMouseEventArgs & args){
 
 void ofxPanel::mouseDragged(ofMouseEventArgs & args){
 	setValue(args.x, args.y, false);
-	if( bGuiActive ){
+	if( bGuiActive && bCollectionVisible ){
 		ofMouseEventArgs a = args;
 		a.x -= b.x;
 		a.y -= b.y;
@@ -124,30 +129,37 @@ void ofxPanel::mouseDragged(ofMouseEventArgs & args){
 void ofxPanel::mouseReleased(ofMouseEventArgs & args){
 	bGuiActive = false;
 	bGrabbed = false;
-	for(int k = 0; k < (int)collection.size(); k++){
-		ofMouseEventArgs a = args;
-		a.x -= b.x;
-		a.y -= b.y;
-		collection[k]->mouseReleased(a);
+	if( bCollectionVisible ) {
+		for(int k = 0; k < (int)collection.size(); k++){
+			ofMouseEventArgs a = args;
+			a.x -= b.x;
+			a.y -= b.y;
+			collection[k]->mouseReleased(a);
+		}
 	}
 }
 
 void ofxPanel::draw(){
-	if(!loadIcon.isAllocated() || !saveIcon.isAllocated()){
+	if(!foldIcon.isAllocated() || !loadIcon.isAllocated() || !saveIcon.isAllocated()){
+		unsigned char foldIconData[] = {0xff,0x02,0xfd,0x0b,0x14,0x28,0x50,0xa0,0x7f};
 		unsigned char loadIconData[] = {0x38,0x88,0xa,0x6,0x7e,0x60,0x50,0x11,0x1c};
 		unsigned char saveIconData[] = {0xff,0x4a,0x95,0xea,0x15,0xa8,0x57,0xa9,0x7f};
+		foldIcon.allocate(9, 8, OF_IMAGE_COLOR_ALPHA);
 		loadIcon.allocate(9, 8, OF_IMAGE_COLOR_ALPHA);
 		saveIcon.allocate(9, 8, OF_IMAGE_COLOR_ALPHA);
+		loadStencilFromHex(foldIcon, foldIconData);
 		loadStencilFromHex(loadIcon, loadIconData);
 		loadStencilFromHex(saveIcon, saveIconData);
 	}
 
 
 	int iconSpacing = 6;
-	loadBox.x = b.width - (loadIcon.getWidth() + saveIcon.getWidth() + iconSpacing + textPadding);
-	loadBox.y = header / 2 - loadIcon.getHeight() / 2;
-	loadBox.width = loadIcon.getWidth();
-	loadBox.height = loadIcon.getHeight();
+	foldBox.x = b.width - (foldIcon.getWidth() + iconSpacing + loadIcon.getWidth() + iconSpacing + saveIcon.getWidth() + textPadding);
+	foldBox.y = header / 2 - foldIcon.getHeight() / 2;
+	foldBox.width = foldIcon.getWidth();
+	foldBox.height = foldIcon.getHeight();
+	loadBox.set(foldBox);
+	loadBox.x += foldIcon.getWidth() + iconSpacing;
 	saveBox.set(loadBox);
 	saveBox.x += loadIcon.getWidth() + iconSpacing;
 
@@ -166,12 +178,15 @@ void ofxPanel::draw(){
 	ofDrawBitmapString(name, textPadding, header / 2 + 4);
 
 	ofPushMatrix();
+	foldIcon.draw(foldBox.x, foldBox.y);
 	loadIcon.draw(loadBox.x, loadBox.y);
 	saveIcon.draw(saveBox.x, saveBox.y);
 	ofPopMatrix();
 
-	for(int i = 0; i < (int)collection.size(); i++){
-		collection[i]->draw();
+	if( bCollectionVisible ) {
+		for(int i = 0; i < (int)collection.size(); i++){
+			collection[i]->draw();
+		}
 	}
 
 	ofPopMatrix();
@@ -229,6 +244,9 @@ void ofxPanel::setValue(float mx, float my, bool bCheck){
 				bGrabbed = false;
 			}
 
+			if(foldBox.inside(mx - b.x, my - b.y)) {
+				fold();
+			}
 			if(loadBox.inside(mx - b.x, my - b.y)) {
 				load();
 			}
