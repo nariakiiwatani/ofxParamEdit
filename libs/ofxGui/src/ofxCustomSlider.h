@@ -9,8 +9,8 @@ class ofxCustomSlider : public ofxBaseGui{
 	
 public:	
 	ofxCustomSlider(){}
-	ofxCustomSlider(string sliderName, int _val, int _min, int _max, float width = defaultWidth, float height = defaultHeight);
-	ofxCustomSlider* setup(string sliderName, int _val, int _min, int _max, float width = defaultWidth, float height = defaultHeight);
+	ofxCustomSlider(string sliderName, int _min, int _max, float width = defaultWidth, float height = defaultHeight);
+	ofxCustomSlider* setup(string sliderName, int _min, int _max, float width = defaultWidth, float height = defaultHeight);
 
 	virtual void mouseMoved(ofMouseEventArgs & args);
 	virtual void mousePressed(ofMouseEventArgs & args);
@@ -50,14 +50,14 @@ protected:
 };
 
 template<typename Type>
-ofxCustomSlider<Type>::ofxCustomSlider(string sliderName, int _val, int _min, int _max, float width, float height){
-	setup(sliderName,_val,_min,_max,width,height);
+ofxCustomSlider<Type>::ofxCustomSlider(string sliderName, int _min, int _max, float width, float height){
+	setup(sliderName,_min,_max,width,height);
 }
 
 template<typename Type>
-ofxCustomSlider<Type>* ofxCustomSlider<Type>::setup(string sliderName, int _val, int _min, int _max, float width, float height){
+ofxCustomSlider<Type>* ofxCustomSlider<Type>::setup(string sliderName, int _min, int _max, float width, float height){
 	name = sliderName;
-	index = _val;
+	index =
 	min = _min;
 	max = _max;
 	b.x = 0;
@@ -69,7 +69,7 @@ ofxCustomSlider<Type>* ofxCustomSlider<Type>::setup(string sliderName, int _val,
 
 	ofRegisterMouseEvents(this);
 
-	value = getValue(_val);
+	value = getValue(index);
 	return this;
 }
 
