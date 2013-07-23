@@ -1,6 +1,6 @@
 
 #include "ofxParamPanel.h"
-#include "ofxLabel.h"
+#include "../libs/ofxGui/src/ofxLabel.h"
 
 ofxParamPanel::ofxParamPanel()
 :ofxPanel()
@@ -29,6 +29,14 @@ ofxButton* ofxParamPanel::addButton(string name)
 	current_->ofxPanel::add(button->setup(name));
 	allocated_.push_back(button);
 	return button;
+}
+
+ofxParamToggle* ofxParamPanel::addToggle(string name)
+{
+	ofxParamToggle* toggle = new ofxParamToggle(name);
+	current_->ofxPanel::add(toggle);
+	allocated_.push_back(toggle);
+	return toggle;
 }
 
 ofxParamToggle* ofxParamPanel::addToggle(string name, bool& val)
@@ -77,6 +85,7 @@ void ofxParamPanel::beginGroup(string name)
 	next->parent_ = current_;
 	current_->children_.push_back(next);
 	current_->addToggle(name, next->is_open_);
+	next->addButton(">back", next, &ofxParamPanel::setOpenCB);
 	current_ = next;
 }
 

@@ -14,10 +14,20 @@ ofxParamToggle::~ofxParamToggle()
 	}
 }
 
+ofxParamToggle::ofxParamToggle(string _name, float width, float height)
+{
+	setup(_name, width, height);
+}
 ofxParamToggle::ofxParamToggle(string _name, bool & val, float width, float height)
 {
 	setup(_name, val, width, height);
 }
+ofxParamToggle* ofxParamToggle::setup(string _name, float width, float height)
+{
+	dummy_ = false;
+	return setup(_name, dummy_, width, height);
+}
+
 ofxParamToggle* ofxParamToggle::setup(string _name, bool & val, float width, float height)
 {
 	ofxToggle::setup(_name, val, width, height);

@@ -1,12 +1,13 @@
 #pragma once
 
-#include "ofxSlider.h"
+#include "../libs/ofxGui/src/ofxSlider.h"
 
 template<typename Type>
 class ofxParamSlider : public ofxSlider<Type>{
 public:
 	ofxParamSlider();
 	~ofxParamSlider();
+	ofxParamSlider(string _name, Type min, Type max, float width = ofxSlider<Type>::defaultWidth, float height = ofxSlider<Type>::defaultHeight);
 	ofxParamSlider(string _name, Type & val, Type min, Type max, float width = ofxSlider<Type>::defaultWidth, float height = ofxSlider<Type>::defaultHeight);
 	ofxParamSlider* setup(string _name, Type & val, Type min, Type max, float width = ofxSlider<Type>::defaultWidth, float height = ofxSlider<Type>::defaultHeight);
 
@@ -24,7 +25,8 @@ public:
 
 private:
 	void onChange(Type& val);
-	Type* ref_;
+	Type dummy_;
+	Type *ref_;
 	ofEvent<Type> changed_;
 };
 
@@ -41,6 +43,13 @@ ofxParamSlider<Type>::~ofxParamSlider()
 	if(ref_) {
 		ofxParamSlider<Type>::removeListener(this, &ofxParamSlider::onChange);
 	}
+}
+
+template<typename Type>
+ofxParamSlider<Type>::ofxParamSlider(string _name, Type min, Type max, float width, float height)
+{
+	dummy_ = min;
+	setup(_name, dummy_, min, max, width, height);
 }
 
 template<typename Type>
