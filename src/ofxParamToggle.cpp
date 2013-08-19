@@ -44,10 +44,13 @@ void ofxParamToggle::onChange(bool& val)
 	changed_.notify(this, val);
 }
 
-void ofxParamToggle::draw()
+void ofxParamToggle::render()
 {
 	if(ref_ && value != *ref_) {
 		value = *ref_;
+		generateDraw();
 	}
-	ofxToggle::draw();
+	ofxToggle::render();
 }
+
+/* EOF */

@@ -1,27 +1,37 @@
 #include "testApp.h"
-
-#include "ofxGui.h"
-#include "ofxParamPanel.h"
-#include "ofxParamToggle.h"
+#include "ofxParamEdit.h"
 
 namespace {
-	ofxParamPanel panel_;
-	bool toggle_value_;
-	float float_value_;
-	int int_value_;
+	ofxParamEdit param;
+	// below are vars to be edit
+	bool child_enable;
+	int color_index;
+	float pos_x;
+	float pos_y;
+	float child_pos_x;
+	float child_pos_y;
 };
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	panel_.setup("settings");
-	panel_.addToggle("toggle", toggle_value_);
-	panel_.beginGroup("hoge");
-	panel_.addSlider("int", int_value_, 0, 255);
-	panel_.beginGroup("fuga");
-	panel_.addSlider("float", float_value_, -1.f, 1.f);
-	panel_.endGroup();
-	panel_.endGroup();
-	panel_.load();
+	// set root name
+	param.setup("root");
+	// add variable
+	param.addSlider("color", color_index, 0, 7);
+	// create a group
+	param.beginGroup("pos", false);
+	param.addSlider("x", pos_x, 0.f, (float)ofGetWidth());
+	param.addSlider("y", pos_y, 0.f, (float)ofGetHeight());
+	// groups can be nested
+	param.beginGroup("child", true);	// second arg should be true( or blank) if you wanted the group to be a panel
+	param.addToggle("on off", child_enable);
+	param.addSlider("x", child_pos_x, -(float)ofGetWidth(), (float)ofGetWidth());
+	param.addSlider("y", child_pos_y, -(float)ofGetHeight(), (float)ofGetHeight());
+	param.endGroup();
+	param.endGroup();
+
+	param.load();
+	param.open();
 }
 
 //--------------------------------------------------------------
@@ -31,26 +41,31 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	panel_.draw();
-
-	int x = 20;
-	int y = 100;
-	int y_interval = 15;
-	string str = "";
-	str = "toggle:";
-	str += (toggle_value_?"true":"false");
-	ofDrawBitmapString(str, x, y);	y += y_interval;
-	str = "int:";
-	str += ofToString(int_value_);
-	ofDrawBitmapString(str, x, y);	y += y_interval;
-	str = "float:";
-	str += ofToString(float_value_);
-	ofDrawBitmapString(str, x, y);	y += y_interval;
-}
-
-//--------------------------------------------------------------
-void testApp::exit(){
-	panel_.save();
+	static const ofColor col[8] = {
+		ofColor::white,
+		ofColor::red,
+		ofColor::green,
+		ofColor::blue,
+		ofColor::cyan,
+		ofColor::magenta,
+		ofColor::yellow,
+		ofColor::black,
+	};
+	ofBackground(ofColor::gray);
+	ofPushStyle();
+	ofSetColor(col[color_index]);
+	ofPushMatrix();
+	ofTranslate(pos_x,pos_y);
+	ofRect(0,0,50,50);
+	if(child_enable) {
+		ofPushMatrix();
+		ofTranslate(child_pos_x,child_pos_y);
+		ofRect(0,0,50,50);
+		ofPopMatrix();
+	}
+	ofPopMatrix();
+	ofPopStyle();
+	param.draw();
 }
 
 //--------------------------------------------------------------
@@ -94,6 +109,6 @@ void testApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){ 
+void testApp::dragEvent(ofDragInfo dragInfo){
 
 }

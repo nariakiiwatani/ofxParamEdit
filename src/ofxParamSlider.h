@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../libs/ofxGui/src/ofxSlider.h"
+#include "ofxSlider.h"
 
 template<typename Type>
 class ofxParamSlider : public ofxSlider<Type>{
@@ -10,18 +10,19 @@ public:
 	ofxParamSlider(string _name, Type min, Type max, float width = ofxSlider<Type>::defaultWidth, float height = ofxSlider<Type>::defaultHeight);
 	ofxParamSlider(string _name, Type & val, Type min, Type max, float width = ofxSlider<Type>::defaultWidth, float height = ofxSlider<Type>::defaultHeight);
 	ofxParamSlider* setup(string _name, Type & val, Type min, Type max, float width = ofxSlider<Type>::defaultWidth, float height = ofxSlider<Type>::defaultHeight);
+	
+	void setReference(Type& val) { ref_ = &val; }
 
-	template<class ListenerClass>
-	void addListener(ListenerClass * listener, void ( ListenerClass::*method )(Type&)){
-		changed_ += Poco::delegate(listener, method);
+	template<class ListenerClass, typename ListenerMethod>
+	void addListener(ListenerClass * listener, ListenerMethod method){
+		ofAddListener(changed_,listener,method);
 	}
 
-	template<class ListenerClass>
-	void removeListener(ListenerClass * listener, void ( ListenerClass::*method )(Type&)){
-		changed_ -= Poco::delegate(listener, method);
+	template<class ListenerClass, typename ListenerMethod>
+	void removeListener(ListenerClass * listener, ListenerMethod method){
+		ofRemoveListener(changed_,listener,method);
 	}
-
-	void draw();
+	void render();
 
 private:
 	void onChange(Type& val);
@@ -63,7 +64,7 @@ ofxParamSlider<Type>* ofxParamSlider<Type>::setup(string _name, Type& val, Type 
 {
 	ofxSlider<Type>::setup(_name, val, min, max, width, height);
 	ofxSlider<Type>::addListener(this, &ofxParamSlider::onChange);
-	ref_ = &val;
+	setReference(val);
 	return this;
 }
 
@@ -77,10 +78,13 @@ void ofxParamSlider<Type>::onChange(Type& val)
 }
 
 template<typename Type>
-void ofxParamSlider<Type>::draw()
+void ofxParamSlider<Type>::render()
 {
 	if(ref_ && ofxSlider<Type>::value != *ref_) {
 		ofxSlider<Type>::value = *ref_;
+		ofxSlider<Type>::generateDraw();
 	}
-	ofxSlider<Type>::draw();
+	ofxSlider<Type>::render();
 }
+
+/* EOF */

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../libs/ofxGui/src/ofxToggle.h"
+#include "ofxToggle.h"
 
 class ofxParamToggle : public ofxToggle{
 public:
@@ -10,18 +10,19 @@ public:
 	ofxParamToggle(string _name, bool& val, float width = ofxToggle::defaultWidth, float height = ofxToggle::defaultHeight);
 	ofxParamToggle * setup(string _name, float width = ofxToggle::defaultWidth, float height = ofxToggle::defaultHeight);
 	ofxParamToggle * setup(string _name, bool& val, float width = ofxToggle::defaultWidth, float height = ofxToggle::defaultHeight);
+	
+	void setReference(bool& val) { ref_ = &val; }
 
-	template<class ListenerClass>
-	void addListener(ListenerClass * listener, void ( ListenerClass::*method )(bool&)){
-		changed_ += Poco::delegate(listener, method);
+	template<class ListenerClass, typename ListenerMethod>
+	void addListener(ListenerClass * listener, ListenerMethod method){
+		ofAddListener(changed_,listener,method);
 	}
 
-	template<class ListenerClass>
-	void removeListener(ListenerClass * listener, void ( ListenerClass::*method )(bool&)){
-		changed_ -= Poco::delegate(listener, method);
+	template<class ListenerClass, typename ListenerMethod>
+	void removeListener(ListenerClass * listener, ListenerMethod method){
+		ofRemoveListener(changed_,listener,method);
 	}
-
-	void draw();
+	void render();
 
 private:
 	void onChange(bool& val);
@@ -29,3 +30,5 @@ private:
 	bool * ref_;
 	ofEvent<bool> changed_;
 };
+
+/* EOF */
