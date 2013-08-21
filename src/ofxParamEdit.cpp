@@ -49,7 +49,7 @@ ofxLabel* ofxParamEdit::createLabel(string name)
 {
 	ofxGuiGroup *current = stack_.back();
 	ofxLabel* label = new ofxLabel(name);
-	current->ofxPanel::add(label);
+	current->add(label);
 	allocated_.push_back(label);
 	return label;
 }
