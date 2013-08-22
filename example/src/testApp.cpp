@@ -4,12 +4,15 @@
 namespace {
 	ofxParamEdit param;
 	// below are vars to be edit
-	bool child_enable;
-	int color_index;
-	float pos_x;
-	float pos_y;
-	float child_pos_x;
-	float child_pos_y;
+	bool enable=true;
+	ofFloatColor color;
+	ofVec2f pos(300,100);
+	float size=100;
+	bool child_enable=true;
+	float child_pos_x=50;
+	float child_pos_y=50;
+	
+	ofColor bg_color(128,128,128);
 };
 
 //--------------------------------------------------------------
@@ -17,17 +20,16 @@ void testApp::setup(){
 	// set root name
 	param.setup("root");
 	// add variable
-	param.addSlider("color", color_index, 0, 7);
+	param.addButton("bang", this, &testApp::callback);
+	param.addToggle("on off", enable, this, &testApp::callbackB);
+	param.addSlider("size", size, 100.f, 500.f, this, &testApp::callbackF);
+	param.addColorSlider("color", color, ofFloatColor(0,0,0,0), ofFloatColor(1,1,1,1), this, &testApp::callbackC);
+	param.addVecSlider("pos", pos, ofVec2f(0,0), ofVec2f(ofGetWidth(), ofGetHeight()), this, &testApp::callbackV);
 	// create a group
-	param.beginGroup("pos", false);
-	param.addSlider("x", pos_x, 0.f, (float)ofGetWidth());
-	param.addSlider("y", pos_y, 0.f, (float)ofGetHeight());
-	// groups can be nested
 	param.beginGroup("child", true);	// second arg should be true( or blank) if you wanted the group to be a panel
 	param.addToggle("on off", child_enable);
 	param.addSlider("x", child_pos_x, -(float)ofGetWidth(), (float)ofGetWidth());
 	param.addSlider("y", child_pos_y, -(float)ofGetHeight(), (float)ofGetHeight());
-	param.endGroup();
 	param.endGroup();
 
 	param.load();
@@ -41,32 +43,51 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	static const ofColor col[8] = {
-		ofColor::white,
-		ofColor::red,
-		ofColor::green,
-		ofColor::blue,
-		ofColor::cyan,
-		ofColor::magenta,
-		ofColor::yellow,
-		ofColor::black,
-	};
-	ofBackground(ofColor::gray);
-	ofPushStyle();
-	ofSetColor(col[color_index]);
-	ofPushMatrix();
-	ofTranslate(pos_x,pos_y);
-	ofRect(0,0,50,50);
-	if(child_enable) {
+	ofBackground(bg_color);
+	if(enable) {
+		ofPushStyle();
+		ofSetColor(color);
 		ofPushMatrix();
-		ofTranslate(child_pos_x,child_pos_y);
-		ofRect(0,0,50,50);
+		ofTranslate(pos);
+		ofRect(0,0,size,size);
+		if(child_enable) {
+			ofPushMatrix();
+			ofTranslate(child_pos_x,child_pos_y);
+			ofRect(0,0,size,size);
+			ofPopMatrix();
+		}
 		ofPopMatrix();
+		ofPopStyle();
 	}
-	ofPopMatrix();
-	ofPopStyle();
 	param.draw();
 }
+
+void testApp::callback()
+{
+	ofLog(OF_LOG_NOTICE, "bang");
+	bg_color.set(ofRandom(255),ofRandom(255),ofRandom(255));
+}
+
+void testApp::callbackB(bool& val)
+{
+	ofLog(OF_LOG_NOTICE, "bool:%s", val?"true":"false");
+}
+
+void testApp::callbackF(float& val)
+{
+	ofLog(OF_LOG_NOTICE, "float:%f", val);
+}
+
+void testApp::callbackV(ofVec2f& val)
+{
+	ofLog(OF_LOG_NOTICE, "vec2:(%f,%f)", val.x, val.y);
+}
+
+void testApp::callbackC(ofFloatColor& val)
+{
+	ofLog(OF_LOG_NOTICE, "color:(%f,%f,%f,%f)", val.r, val.g, val.b, val.a);
+}
+
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
