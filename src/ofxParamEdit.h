@@ -14,7 +14,13 @@ public:
 	~ofxParamEdit();
 
 	void setup(string name);
+	void draw();
 	
+	void open() { root_.open(); }
+	void close() { root_.close(); }
+	bool isOpen() { return root_.isOpen(); }	
+
+	// adding vars
 	void addLabel(string name);
 	void addButton(string name);
 	void addToggle(string name, bool& val);
@@ -25,10 +31,7 @@ public:
 	template<typename Type>
 	void addColorSlider(string name, ofColor_<Type>& val, const ofColor_<Type>& min, const ofColor_<Type>& max);
 
-	void beginGroup(string name, bool panel=true);
-	void endGroup();
-	void draw();
-	
+	// adding vars with callback
 	template<class ListenerClass, typename ListenerMethod>
 	void addButton(string name, ListenerClass *listener, ListenerMethod method);
 
@@ -52,12 +55,13 @@ public:
 	template<typename Type, class ListenerClass, typename ListenerMethod>
 	void addColorSlider(string name, ofColor_<Type>& val, const ofColor_<Type>& min, const ofColor_<Type>& max, ListenerClass *listener, ListenerMethod method);
 
+	// file io
 	void load();
 	void save();
 	
-	void open() { root_.open(); }
-	void close() { root_.close(); }
-	bool isOpen() { return root_.isOpen(); }
+	// grouping
+	void beginGroup(string name, bool panel=true);
+	void endGroup();
 
 private:
 	template<typename Type>
