@@ -17,4 +17,10 @@ class testApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+private:
+	void callback();
+	void callbackB(bool& val);
+	void callbackF(float& val);
+	void callbackV(ofVec2f& val);
+	void callbackC(ofFloatColor& val);
 };

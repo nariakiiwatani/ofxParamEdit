@@ -17,28 +17,30 @@ see example/src/testApp.cpp
 
 	ofxParamEdit param;
 	// below are vars to be edit
-	bool child_enable;
-	int color_index;
-	float pos_x;
-	float pos_y;
-	float child_pos_x;
-	float child_pos_y;
+	bool enable=true;
+	ofFloatColor color;
+	ofVec2f pos(300,100);
+	float size=100;
+	bool child_enable=true;
+	float child_pos_x=50;
+	float child_pos_y=50;
 	// set root name
 	param.setup("root");
-	// add variable
-	param.addSlider("color", color_index, 0, 7);
+	// add variable (with callback)
+	param.addButton("bang", this, &testApp::callback);
+	param.addToggle("on off", enable, this, &testApp::callbackB);
+	param.addSlider("size", size, 100.f, 500.f, this, &testApp::callbackF);
+	param.addColorSlider("color", color, ofFloatColor(0,0,0,0), ofFloatColor(1,1,1,1), this, &testApp::callbackC);
+	param.addVecSlider("pos", pos, ofVec2f(0,0), ofVec2f(ofGetWidth(), ofGetHeight()), this, &testApp::callbackV);
 	// create a group
-	param.beginGroup("pos", false);
-	param.addSlider("x", pos_x, 0.f, (float)ofGetWidth());
-	param.addSlider("y", pos_y, 0.f, (float)ofGetHeight());
-	// groups can be nested
 	param.beginGroup("child", true);	// second arg should be true( or blank) if you wanted the group to be a panel
 	param.addToggle("on off", child_enable);
 	param.addSlider("x", child_pos_x, -(float)ofGetWidth(), (float)ofGetWidth());
 	param.addSlider("y", child_pos_y, -(float)ofGetHeight(), (float)ofGetHeight());
 	param.endGroup();
-	param.endGroup();
-	// load from xml file
+
+	// load from XML file
 	param.load();
+	// visible
 	param.open();
 
