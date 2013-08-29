@@ -11,7 +11,7 @@ public:
 	ofxParamEdit();
 	~ofxParamEdit();
 
-	void setup(string name);
+	void setup(string name, float x = 10, float y = 10);
 	
 	void addButton(string name);
 	void addToggle(string name, bool& val);
