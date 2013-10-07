@@ -99,7 +99,7 @@ void ofxParamEdit::beginGroup(string name, bool panel)
 string ofxParamEdit::getCurrentFolderName()
 {
 	string folder = "";
-	for(vector<ofxParamPanel*>::iterator it = panels_.begin(); it != panels_.end(); ++it) {
+	for(vector<ofxGuiGroup*>::iterator it = stack_.begin(); it != stack_.end(); ++it) {
 		if(ofxParamPanel *p = dynamic_cast<ofxParamPanel*>(*it)) {
 			folder += p->getName()+"/";
 		}
