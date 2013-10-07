@@ -19,6 +19,7 @@ ofxParamEdit::~ofxParamEdit()
 void ofxParamEdit::setup(string name, float x, float y)
 {
 	root_.setup(name, name+".xml", x, y);
+	root_.open();
 }
 
 ofxButton* ofxParamEdit::createButton(string name)
