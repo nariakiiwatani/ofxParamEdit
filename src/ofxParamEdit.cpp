@@ -16,13 +16,13 @@ ofxParamEdit::~ofxParamEdit()
 	}
 }
 
-void ofxParamEdit::setup(string name, float x, float y)
+void ofxParamEdit::setup(const string& name, float x, float y)
 {
 	root_.setup(name, name+".xml", x, y);
 	root_.open();
 }
 
-ofxButton* ofxParamEdit::createButton(string name)
+ofxButton* ofxParamEdit::createButton(const string& name)
 {
 	ofxGuiGroup *current = stack_.back();
 	ofxButton* button = new ofxButton();
@@ -31,7 +31,7 @@ ofxButton* ofxParamEdit::createButton(string name)
 	return button;
 }
 
-ofxParamToggle* ofxParamEdit::createToggle(string name)
+ofxParamToggle* ofxParamEdit::createToggle(const string& name)
 {
 	ofxGuiGroup *current = stack_.back();
 	ofxParamToggle* toggle = new ofxParamToggle(name);
@@ -40,13 +40,13 @@ ofxParamToggle* ofxParamEdit::createToggle(string name)
 	return toggle;
 }
 
-void ofxParamEdit::addToggle(string name, bool& val)
+void ofxParamEdit::addToggle(const string& name, bool& val)
 {
 	ofxParamToggle* toggle = createToggle(name);
 	toggle->setReference(val);
 }
 
-ofxLabel* ofxParamEdit::createLabel(string name)
+ofxLabel* ofxParamEdit::createLabel(const string& name)
 {
 	ofxGuiGroup *current = stack_.back();
 	ofxLabel* label = new ofxLabel(name);
@@ -55,7 +55,7 @@ ofxLabel* ofxParamEdit::createLabel(string name)
 	return label;
 }
 
-void ofxParamEdit::addLabel(string name)
+void ofxParamEdit::addLabel(const string& name)
 {
 	createLabel(name);
 }
@@ -79,25 +79,45 @@ void ofxParamEdit::save()
 	}
 }
 
-void ofxParamEdit::beginGroup(string name, bool panel)
+void ofxParamEdit::beginGroup(const string& name, bool as_panel)
 {
-	ofxGuiGroup *group = stack_.back();
-	if(panel) {
-		ofxParamPanel* next = new ofxParamPanel();
-		const ofRectangle& b = group->getShape();
-		next->setup(name, getCurrentFolderName()+name+".xml");
-		next->setPosition(b.x+b.width, b.y+b.height);
-		panels_.push_back(next);
-		addToggle(name, next->is_open_);
-		stack_.push_back(next);
-		addButton(">back", next, &ofxParamPanel::close);
-		allocated_.push_back(next);
+	ofxGuiGroup *parent = stack_.back();
+	ofxGuiGroup *next = as_panel ? createPanel(name, parent) : createGroup(name, parent);
+	groups_.push_back(next);
+}
+
 	}
 	else {
 		ofxGuiGroup *next = new ofxGuiGroup();
 		next->setup(name, getCurrentFolderName()+name+".xml");
 		group->add(next);
 		stack_.push_back(next);
+ofxParamPanel* ofxParamEdit::createPanel(const string& name, ofxGuiGroup *parent)
+{
+	ofxParamPanel *panel = new ofxParamPanel();
+	const ofRectangle& b = parent->getShape();
+	panel->setup(name, getCurrentFolderName()+name+".xml");
+	panel->setPosition(b.x+b.width, b.y+b.height);
+	panels_.push_back(panel);
+	addToggle(name, panel->is_open_);
+	allocated_.push_back(panel);
+	
+	stack_.push_back(panel);
+	addButton(">back", panel, &ofxParamPanel::close);
+
+	return panel;
+}
+
+ofxGuiGroup* ofxParamEdit::createGroup(const string& name, ofxGuiGroup *parent)
+{
+	ofxGuiGroup *group = new ofxGuiGroup();
+	group->setup(name, getCurrentFolderName()+name+".xml");
+	parent->add(group);
+	allocated_.push_back(group);
+	stack_.push_back(group);
+	return group;
+}
+
 	}
 }
 
