@@ -55,6 +55,9 @@ public:
 	template<typename Type, class ListenerClass, typename ListenerMethod>
 	void addColorSlider(string name, ofColor_<Type>& val, const ofColor_<Type>& min, const ofColor_<Type>& max, ListenerClass *listener, ListenerMethod method);
 
+	// adding something
+	void add(ofxBaseGui *gui);
+	
 	// file io
 	void load();
 	void save();

@@ -60,6 +60,11 @@ void ofxParamEdit::addLabel(string name)
 	createLabel(name);
 }
 
+void ofxParamEdit::add(ofxBaseGui *gui)
+{
+	stack_.back()->add(gui);
+}
+
 void ofxParamEdit::load()
 {
 	for(vector<ofxParamPanel*>::iterator it = panels_.begin(); it != panels_.end(); ++it) {
