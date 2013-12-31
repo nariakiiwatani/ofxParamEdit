@@ -86,12 +86,18 @@ void ofxParamEdit::beginGroup(const string& name, bool as_panel)
 	groups_.push_back(next);
 }
 
+void ofxParamEdit::beginExistingGroup(const string& name, int index)
+{
+	ofxGuiGroup *group = getGroup(name, index);
+	if(group) {
+		stack_.push_back(group);
 	}
 	else {
-		ofxGuiGroup *next = new ofxGuiGroup();
-		next->setup(name, getCurrentFolderName()+name+".xml");
-		group->add(next);
-		stack_.push_back(next);
+		ofLog(OF_LOG_WARNING, "group "+name+" does not exist. creating new.");
+		beginGroup(name);
+	}
+}
+
 ofxParamPanel* ofxParamEdit::createPanel(const string& name, ofxGuiGroup *parent)
 {
 	ofxParamPanel *panel = new ofxParamPanel();
@@ -118,7 +124,16 @@ ofxGuiGroup* ofxParamEdit::createGroup(const string& name, ofxGuiGroup *parent)
 	return group;
 }
 
+ofxGuiGroup* ofxParamEdit::getGroup(const string& name, int index)
+{
+	for(vector<ofxGuiGroup*>::iterator group = groups_.begin(); group != groups_.end(); ++group) {
+		if((*group)->getName() == name) {
+			if(--index < 0) {
+				return *group;
+			}
+		}
 	}
+	return NULL;
 }
 
 string ofxParamEdit::getCurrentFolderName()

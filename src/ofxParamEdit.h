@@ -64,6 +64,7 @@ public:
 	
 	// grouping
 	void beginGroup(const string& name, bool as_panel=true);
+	void beginExistingGroup(const string& name, int index=0);
 	void endGroup();
 
 private:
@@ -76,6 +77,7 @@ private:
 	ofxButton* createButton(const string& name);
 	ofxParamToggle* createToggle(const string& name);
 	ofxLabel* createLabel(const string& name);
+	ofxGuiGroup* getGroup(const string& name, int index);
 	ofxParamPanel* createPanel(const string& name, ofxGuiGroup *parent);
 	ofxGuiGroup* createGroup(const string& name, ofxGuiGroup *parent);
 private:
@@ -84,6 +86,7 @@ private:
 	string getCurrentFolderName();
 
 	vector<ofxParamPanel*> panels_;
+	vector<ofxGuiGroup*> groups_;
 	vector<ofxBaseGui*> allocated_;
 };
 
