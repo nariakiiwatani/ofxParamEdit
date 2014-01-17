@@ -19,6 +19,8 @@ public:
 	void open() { root_.open(); }
 	void close() { root_.close(); }
 	bool isOpen() { return root_.isOpen(); }	
+	void setOpen(bool set) { set?open():close(); }
+	void toggleOpen() { isOpen()?close():open(); }
 
 	// adding vars
 	void addLabel(const string& name);
