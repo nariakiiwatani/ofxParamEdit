@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxParamEdit.h"
 
-class testApp : public ofBaseApp{
+class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void update();
@@ -23,4 +24,16 @@ private:
 	void callbackF(float& val);
 	void callbackV(ofVec2f& val);
 	void callbackC(ofFloatColor& val);
+
+	ofxParamEdit param;
+	// below are vars to be edit
+	bool enable=true;
+	ofFloatColor color;
+	ofVec2f pos = ofVec2f(300,100);
+	float size=100;
+	bool child_enable=true;
+	float child_pos_x=50;
+	float child_pos_y=50;
+	
+	ofColor bg_color = ofColor(128,128,128);
 };
