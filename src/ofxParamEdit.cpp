@@ -19,6 +19,7 @@ ofxParamEdit::~ofxParamEdit()
 void ofxParamEdit::setup(const string& name, float x, float y)
 {
 	root_.setup(name, name+".xml", x, y);
+	root_.getParameter().setName(name);
 	root_.open();
 }
 
@@ -103,6 +104,7 @@ ofxParamPanel* ofxParamEdit::createPanel(const string& name, ofxGuiGroup *parent
 	ofxParamPanel *panel = new ofxParamPanel();
 	const ofRectangle& b = parent->getShape();
 	panel->setup(name, getCurrentFolderName()+name+".xml");
+	panel->getParameter().setName(name);
 	panel->setPosition(b.x+b.width, b.y+b.height);
 	panels_.push_back(panel);
 	addToggle(name, panel->is_open_);
@@ -118,6 +120,7 @@ ofxGuiGroup* ofxParamEdit::createGroup(const string& name, ofxGuiGroup *parent)
 {
 	ofxGuiGroup *group = new ofxGuiGroup();
 	group->setup(name, getCurrentFolderName()+name+".xml");
+	group->getParameter().setName(name);
 	parent->add(group);
 	allocated_.push_back(group);
 	stack_.push_back(group);
